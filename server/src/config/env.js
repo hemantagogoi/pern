@@ -11,6 +11,7 @@ export const env = {
   clientUrls: (process.env.CLIENT_URL || 'http://localhost:5173,http://localhost:5174')
     .split(',')
     .map((url) => url.trim())
+    .concat(process.env.RENDER_EXTERNAL_URL ? [process.env.RENDER_EXTERNAL_URL] : [])
     .filter(Boolean),
   collegeName: process.env.COLLEGE_NAME || 'North Lakhimpur University',
   smtp: {

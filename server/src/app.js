@@ -15,7 +15,7 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin(origin, callback) {
     if (!origin || env.clientUrls.includes(origin)) return callback(null, true);
-    return callback(new Error('Not allowed by CORS'));
+    return callback(null, false);
   },
   credentials: true
 }));

@@ -1,0 +1,39 @@
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from './authSlice.js';
+
+export default function LoginPage() {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  async function submit(event) {
+    event.preventDefault();
+    try {
+      const user = await dispatch(login(form)).unwrap();
+      navigate(user.role === 'admin' ? '/admin' : '/faculty');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Login failed');
+    }
+  }
+
+  return (
+    <main className="grid min-h-screen place-items-center bg-slate-100 p-6">
+      <form onSubmit={submit} className="w-full max-w-md rounded-xl bg-white p-8 shadow-soft">
+        <h1 className="text-2xl font-black">Login</h1>
+        <Link to="/" className="mt-4 block rounded-lg border border-slate-200 p-3 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50">
+          Back to Landing Page
+        </Link>
+        <input className="mt-6 w-full rounded-lg border p-3" placeholder="Email" type="email" onChange={(e) => setForm({ ...form, email: e.target.value })} />
+        <input className="mt-3 w-full rounded-lg border p-3" placeholder="Password" type="password" onChange={(e) => setForm({ ...form, password: e.target.value })} />
+        <button className="mt-5 w-full rounded-lg bg-brand-700 p-3 font-semibold text-white">Sign in</button>
+        <div className="mt-4 flex justify-between text-sm">
+          <Link to="/forgot-password">Forgot password?</Link>
+          <Link to="/register">Create account</Link>
+        </div>
+      </form>
+    </main>
+  );
+}

@@ -1,0 +1,22 @@
+databases:
+  - name: aqpg-db
+    plan: free
+    databaseName: aqpg
+    user: aqpg
+
+services:
+  - type: web
+    name: aqpg-app
+    env: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aqpg-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true

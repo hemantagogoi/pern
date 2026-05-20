@@ -1,0 +1,20 @@
+{
+  "name": "automated-question-paper-generator",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Full-stack PERN automated question paper generator system.",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+    "build": "npm run install:all && npm run build --workspace client",
+    "install:all": "npm install --workspaces",
+    "lint": "npm run lint --workspace client",
+    "start": "npm run start --workspace server"
+  },
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
     "build": "npm run install:all && npm run build --workspace client",
-    "install:all": "npm install --workspaces",
+    "install:all": "npm install --workspaces --include=dev",
     "lint": "npm run lint --workspace client",
     "start": "npm run start --workspace server"
   },

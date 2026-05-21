@@ -4,6 +4,9 @@ import { api, getApiErrorMessage } from '../../lib/api.js';
 export const login = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
   try {
     const { data } = await api.post('/auth/login', payload);
+    if (!data || !data.token || !data.user) {
+      return rejectWithValue('Login failed. Please try again.');
+    }
     localStorage.setItem('token', data.token);
     return data.user;
   } catch (error) {

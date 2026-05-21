@@ -11,6 +11,86 @@ function shuffleQuestions(questions) {
   return shuffled;
 }
 
+function getMarkCounts(markRules) {
+  return new Map(markRules.map((rule) => [rule.marks, rule.count]));
+}
+
+function getRemainingTotal(markCounts) {
+  return [...markCounts.values()].reduce((sum, count) => sum + count, 0);
+}
+
+function canStillCoverUnits(units, candidates, markCounts, usedQuestionIds) {
+  return units.every((unitId) => candidates.some((question) => {
+    return Number(question.unit_id) === Number(unitId)
+      && (markCounts.get(Number(question.marks)) || 0) > 0
+      && !usedQuestionIds.has(question.id);
+  }));
+}
+
+function selectQuestionsWithUnitCoverage(candidates, unitIds, markRules) {
+  const markCounts = getMarkCounts(markRules);
+  const selected = [];
+  const usedQuestionIds = new Set();
+  const orderedUnitIds = shuffleQuestions(unitIds).sort((left, right) => {
+    const leftOptions = candidates.filter((question) => Number(question.unit_id) === Number(left)).length;
+    const rightOptions = candidates.filter((question) => Number(question.unit_id) === Number(right)).length;
+    return leftOptions - rightOptions;
+  });
+
+  function coverUnit(unitIndex) {
+    if (unitIndex === orderedUnitIds.length) return true;
+    const unitId = orderedUnitIds[unitIndex];
+    const remainingUnits = orderedUnitIds.slice(unitIndex + 1);
+    const options = shuffleQuestions(candidates.filter((question) => {
+      return Number(question.unit_id) === Number(unitId)
+        && (markCounts.get(Number(question.marks)) || 0) > 0
+        && !usedQuestionIds.has(question.id);
+    }));
+
+    for (const question of options) {
+      const marks = Number(question.marks);
+      selected.push(question);
+      usedQuestionIds.add(question.id);
+      markCounts.set(marks, markCounts.get(marks) - 1);
+
+      const enoughSlotsRemain = remainingUnits.length <= getRemainingTotal(markCounts);
+      if (
+        enoughSlotsRemain
+        && canStillCoverUnits(remainingUnits, candidates, markCounts, usedQuestionIds)
+        && coverUnit(unitIndex + 1)
+      ) {
+        return true;
+      }
+
+      markCounts.set(marks, markCounts.get(marks) + 1);
+      usedQuestionIds.delete(question.id);
+      selected.pop();
+    }
+
+    return false;
+  }
+
+  if (!coverUnit(0)) return null;
+
+  for (const markRule of markRules) {
+    const remainingCount = markCounts.get(markRule.marks) || 0;
+    if (!remainingCount) continue;
+
+    const options = shuffleQuestions(candidates.filter((question) => {
+      return Number(question.marks) === markRule.marks && !usedQuestionIds.has(question.id);
+    }));
+
+    if (options.length < remainingCount) return null;
+
+    for (const question of options.slice(0, remainingCount)) {
+      selected.push(question);
+      usedQuestionIds.add(question.id);
+    }
+  }
+
+  return shuffleQuestions(selected);
+}
+
 export async function generatePaper(userId, payload) {
   return withTransaction(async (client) => {
     const access = await client.query(
@@ -31,6 +111,11 @@ export async function generatePaper(userId, payload) {
     if (!unitIds.length) throw new AppError('Select at least one unit', 422);
     if (!markRules.length) throw new AppError('Add at least one marks pattern', 422);
 
+    const requestedQuestionCount = markRules.reduce((sum, rule) => sum + rule.count, 0);
+    if (unitIds.length > requestedQuestionCount) {
+      throw new AppError('Requested question count must be at least the number of selected units', 422);
+    }
+
     const validUnits = await client.query(
       `SELECT u.id
        FROM units u
@@ -41,19 +126,6 @@ export async function generatePaper(userId, payload) {
     );
     if (validUnits.rowCount !== new Set(unitIds).size) {
       throw new AppError('Select only units available for the selected subject', 422);
-    }
-
-    const availableMarks = await client.query(
-      `SELECT marks, COUNT(*)::int AS question_count
-       FROM questions
-       WHERE subject_id = $1 AND unit_id = ANY($2::int[])
-       GROUP BY marks`,
-      [payload.subject_id, unitIds]
-    );
-    const availableByMarks = new Map(availableMarks.rows.map((row) => [Number(row.marks), Number(row.question_count)]));
-    const unavailableRule = markRules.find((rule) => rule.count > (availableByMarks.get(rule.marks) || 0));
-    if (unavailableRule) {
-      throw new AppError(`Not enough ${unavailableRule.marks} mark questions are available for the selected subject and units`, 422);
     }
 
     const pattern = { unit_ids: unitIds, mark_rules: markRules, difficulty: payload.difficulty || null };
@@ -79,61 +151,63 @@ export async function generatePaper(userId, payload) {
       previousQuestionIds = previousQuestions.rows.map((row) => row.question_id);
     }
 
-    const selected = [];
-    const used = new Set();
-
-    for (const markRule of markRules) {
-      const availableWithoutPrevious = await client.query(
-        `SELECT COUNT(*)::int AS question_count
-         FROM questions
-         WHERE subject_id=$1
-           AND unit_id = ANY($2::int[])
-           AND marks=$3
-           AND ($4::difficulty_level IS NULL OR difficulty=$4)
-           AND NOT (id = ANY($5::uuid[]))`,
-        [
-          payload.subject_id,
-          unitIds,
-          markRule.marks,
-          payload.difficulty || null,
-          previousQuestionIds
-        ]
-      );
-      const canAvoidPrevious = Number(availableWithoutPrevious.rows[0].question_count) >= markRule.count;
-      const params = [
-        payload.subject_id,
-        unitIds,
-        markRule.count,
-        markRule.marks,
-        payload.difficulty || null,
-        previousQuestionIds,
-        canAvoidPrevious
-      ];
+    async function loadCandidates(avoidPreviousQuestions) {
       const { rows } = await client.query(
         `SELECT q.*, u.unit_number, u.title AS unit_title
          FROM questions q
          JOIN units u ON u.id = q.unit_id
          WHERE q.subject_id=$1
            AND q.unit_id = ANY($2::int[])
-           AND q.marks=$4
-           AND ($5::difficulty_level IS NULL OR q.difficulty=$5)
-           AND ($7::boolean = FALSE OR NOT (q.id = ANY($6::uuid[])))
-         ORDER BY random()
-         LIMIT $3`,
-        params
+           AND q.marks = ANY($3::int[])
+           AND ($4::difficulty_level IS NULL OR q.difficulty=$4)
+           AND ($5::boolean = FALSE OR NOT (q.id = ANY($6::uuid[])))
+         ORDER BY random()`,
+        [
+          payload.subject_id,
+          unitIds,
+          markRules.map((rule) => rule.marks),
+          payload.difficulty || null,
+          avoidPreviousQuestions,
+          previousQuestionIds
+        ]
       );
-      if (rows.length < markRule.count) {
-        throw new AppError(`Not enough ${markRule.marks} mark questions are available for the selected units`, 422);
-      }
-      for (const question of rows) {
-        if (!used.has(question.id)) {
-          used.add(question.id);
-          selected.push(question);
-        }
+      return rows;
+    }
+
+    const allCandidates = await loadCandidates(false);
+    const availableByMarks = new Map();
+    for (const question of allCandidates) {
+      const marks = Number(question.marks);
+      availableByMarks.set(marks, (availableByMarks.get(marks) || 0) + 1);
+    }
+
+    const unavailableRule = markRules.find((rule) => rule.count > (availableByMarks.get(rule.marks) || 0));
+    if (unavailableRule) {
+      throw new AppError(`Not enough ${unavailableRule.marks} mark questions are available for the selected subject and units`, 422);
+    }
+
+    let randomizedSelected = null;
+    if (previousQuestionIds.length) {
+      const freshCandidates = await loadCandidates(true);
+      randomizedSelected = selectQuestionsWithUnitCoverage(freshCandidates, unitIds, markRules);
+    }
+
+    if (!randomizedSelected) {
+      randomizedSelected = selectQuestionsWithUnitCoverage(allCandidates, unitIds, markRules);
+      if (!randomizedSelected) {
+        throw new AppError('Not enough eligible questions to include every selected unit in this paper pattern', 422);
       }
     }
 
-    const randomizedSelected = shuffleQuestions(selected);
+    if (randomizedSelected.length !== requestedQuestionCount) {
+      throw new AppError('Generated question count does not match the requested paper pattern', 422);
+    }
+
+    const coveredUnitIds = new Set(randomizedSelected.map((question) => Number(question.unit_id)));
+    const missingUnitId = unitIds.find((unitId) => !coveredUnitIds.has(unitId));
+    if (missingUnitId) {
+      throw new AppError('Generated paper must include at least one question from every selected unit', 422);
+    }
 
     const selectedMarks = randomizedSelected.reduce((sum, question) => sum + Number(question.marks), 0);
     if (selectedMarks !== Number(payload.total_marks)) {

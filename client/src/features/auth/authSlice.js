@@ -1,10 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api } from '../../lib/api.js';
+import { api, getApiErrorMessage } from '../../lib/api.js';
 
-export const login = createAsyncThunk('auth/login', async (payload) => {
-  const { data } = await api.post('/auth/login', payload);
-  localStorage.setItem('token', data.token);
-  return data.user;
+export const login = createAsyncThunk('auth/login', async (payload, { rejectWithValue }) => {
+  try {
+    const { data } = await api.post('/auth/login', payload);
+    localStorage.setItem('token', data.token);
+    return data.user;
+  } catch (error) {
+    return rejectWithValue(getApiErrorMessage(error, 'Login failed'));
+  }
 });
 
 export const loadMe = createAsyncThunk('auth/me', async () => {

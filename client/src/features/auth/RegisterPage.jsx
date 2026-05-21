@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { api } from '../../lib/api.js';
+import { api, getApiErrorMessage } from '../../lib/api.js';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -20,10 +20,7 @@ export default function RegisterPage() {
       setForm({ name: '', email: '', password: '' });
       toast.success('Registration submitted for admin approval');
     } catch (error) {
-      const validationErrors = error.response?.data?.errors;
-      const message = validationErrors?.length
-        ? validationErrors.map((item) => `${item.path}: ${item.msg}`).join(', ')
-        : error.response?.data?.message || 'Registration failed';
+      const message = getApiErrorMessage(error, 'Registration failed');
       setErrorMessage(message);
       toast.error(message);
     } finally {

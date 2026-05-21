@@ -15,7 +15,7 @@ export default function LoginPage() {
       const user = await dispatch(login(form)).unwrap();
       navigate(user.role === 'admin' ? '/admin' : '/faculty');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      toast.error(typeof error === 'string' ? error : 'Login failed');
     }
   }
 

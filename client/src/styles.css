@@ -39,6 +39,12 @@ button {
   max-width: 100%;
 }
 
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
 .glass {
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(18px);
@@ -70,8 +76,55 @@ button {
 }
 
 @media (max-width: 640px) {
+  body {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .text-xs {
+    font-size: 0.82rem !important;
+    line-height: 1.25rem !important;
+  }
+
+  .text-sm {
+    font-size: 0.98rem !important;
+    line-height: 1.55rem !important;
+  }
+
+  .text-base {
+    font-size: 1.08rem !important;
+    line-height: 1.75rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.7rem !important;
+    line-height: 2.05rem !important;
+  }
+
+  button,
+  [role="button"],
+  a.rounded-lg,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  input,
+  select,
+  textarea {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  table {
+    font-size: 0.95rem;
+    width: 100%;
+    min-width: 0;
+  }
+
   .table-shell table {
-    min-width: 620px;
+    min-width: auto;
   }
 }
 

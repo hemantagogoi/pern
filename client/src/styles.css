@@ -25,7 +25,8 @@ body {
   margin: 0;
   background: #f0fdfa;
   color: #10201f;
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 1.7;
 }
 
 img,
@@ -75,38 +76,133 @@ textarea {
 }
 
 .table-shell table {
-  min-width: 680px;
+  min-width: 100%;
+  border-collapse: collapse;
 }
 
-@media (max-width: 900px) {
+button,
+[role="button"],
+a.rounded-lg,
+input,
+select,
+textarea {
+  min-height: 48px;
+  font: inherit;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  word-break: break-word;
+}
+
+.text-xs {
+  font-size: 0.95rem !important;
+  line-height: 1.4rem !important;
+}
+
+.text-sm {
+  font-size: 1.1rem !important;
+  line-height: 1.7rem !important;
+}
+
+.text-base {
+  font-size: 1.2rem !important;
+  line-height: 1.8rem !important;
+}
+
+.text-lg {
+  font-size: 1.35rem !important;
+  line-height: 1.95rem !important;
+}
+
+.text-2xl {
+  font-size: 2rem !important;
+  line-height: 2.4rem !important;
+}
+
+.table-shell table,
+.table-shell thead,
+.table-shell tbody,
+.table-shell th,
+.table-shell td,
+.table-shell tr {
+  display: block;
+}
+
+.table-shell thead tr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+.table-shell tr {
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.table-shell td {
+  padding: 0.55rem 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.table-shell td::before {
+  content: attr(data-label);
+  color: #64748b;
+  flex: 1 1 100%;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.table-shell td > * {
+  flex: 1 1 100%;
+}
+
+.table-shell td.text-right {
+  justify-content: flex-start;
+}
+
+@media (min-width: 901px) {
   body {
-    font-size: 19px;
-    line-height: 1.65;
+    font-size: 16px;
+    line-height: 1.5;
   }
 
   .text-xs {
-    font-size: 0.95rem !important;
-    line-height: 1.4rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
   }
 
   .text-sm {
-    font-size: 1.1rem !important;
-    line-height: 1.7rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
   }
 
   .text-base {
-    font-size: 1.2rem !important;
-    line-height: 1.8rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
   }
 
   .text-lg {
-    font-size: 1.35rem !important;
-    line-height: 1.95rem !important;
+    font-size: 1.125rem !important;
+    line-height: 1.75rem !important;
   }
 
   .text-2xl {
-    font-size: 2rem !important;
-    line-height: 2.4rem !important;
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
   }
 
   button,
@@ -115,32 +211,58 @@ textarea {
   input,
   select,
   textarea {
-    min-height: 48px;
-    font-size: 1rem;
+    min-height: auto;
   }
 
-  input,
-  select,
-  textarea {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+  .table-shell table,
+  .table-shell thead,
+  .table-shell tbody,
+  .table-shell th,
+  .table-shell td,
+  .table-shell tr {
+    display: table-row;
   }
 
-  table {
-    font-size: 1rem;
-    width: 100%;
-    min-width: 0;
-    table-layout: auto;
+  .table-shell thead tr {
+    position: relative;
+    width: auto;
+    height: auto;
+    padding: auto;
+    margin: auto;
+    overflow: visible;
+    clip: auto;
+    border: auto;
   }
 
-  .table-shell table {
-    min-width: auto;
+  .table-shell tr {
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 0;
+    background: transparent;
   }
 
-  th,
-  td {
-    white-space: normal;
-    word-break: break-word;
+  .table-shell td {
+    padding: auto;
+    display: table-cell;
+    justify-content: auto;
+    gap: auto;
+  }
+
+  .table-shell td::before {
+    content: none;
+    color: auto;
+    flex: none;
+    font-size: auto;
+    font-weight: auto;
+  }
+
+  .table-shell td > * {
+    flex: none;
+  }
+
+  .table-shell td.text-right {
+    justify-content: auto;
   }
 }
 

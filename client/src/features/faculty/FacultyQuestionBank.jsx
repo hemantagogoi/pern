@@ -100,7 +100,7 @@ export default function FacultyQuestionBank() {
         <p className="mt-1 text-sm text-slate-500">Add units and questions only for subjects approved by admin.</p>
       </div>
 
-      <section className="rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
         <h2 className="text-lg font-black">Select Approved Subject</h2>
         <Select className="mt-4 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-950" value={selectedSubjectId || ''} onChange={(event) => selectSubject(event.target.value)}>
           <option value="">Choose subject</option>
@@ -110,7 +110,7 @@ export default function FacultyQuestionBank() {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-2">
-        <form onSubmit={addUnit} className="rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <form onSubmit={addUnit} className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
           <h2 className="text-lg font-black">Add Unit</h2>
           <div className="mt-4 grid gap-3">
             <Input type="number" min="1" required placeholder="Unit number" value={unitForm.unit_number} onChange={(event) => setUnitForm({ ...unitForm, unit_number: event.target.value })} />
@@ -119,7 +119,7 @@ export default function FacultyQuestionBank() {
           </div>
         </form>
 
-        <form onSubmit={addQuestion} className="rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+        <form onSubmit={addQuestion} className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
           <h2 className="text-lg font-black">Add Question</h2>
           <div className="mt-4 grid gap-3">
             <Select required value={questionForm.unit_id} onChange={(event) => setQuestionForm({ ...questionForm, unit_id: event.target.value })}>
@@ -146,9 +146,9 @@ export default function FacultyQuestionBank() {
         </form>
       </section>
 
-      <section className="rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
         <h2 className="text-lg font-black">Questions Added For Approved Subjects</h2>
-        <div className="mt-4 overflow-x-auto">
+        <div className="table-shell scrollbar-soft mt-4">
           <table className="w-full text-left text-sm">
             <thead className="text-xs uppercase text-slate-500">
               <tr><th className="py-3">Question</th><th>Subject</th><th>Unit</th><th>Marks</th><th>Difficulty</th><th className="text-right">Action</th></tr>

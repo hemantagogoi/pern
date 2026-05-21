@@ -117,9 +117,9 @@ export default function CatalogPage() {
         <p className="mt-1 text-sm text-slate-500">Add and delete programs, departments, semesters, subjects, and units.</p>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      <div className="grid gap-5 xl:grid-cols-3">
         {simpleSections.map((section) => (
-          <section key={section.resource} className="rounded-lg border bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+          <section key={section.resource} className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5">
             <h2 className="text-lg font-black">{section.title}</h2>
             <form
               className="mt-4 grid gap-3"
@@ -147,8 +147,8 @@ export default function CatalogPage() {
             <div className="mt-4 space-y-2">
               {section.rows.map((row) => (
                 <div key={row.id} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800">
-                  <span><b>{row.name}</b><span className="text-slate-500"> {row.code || row.semester_number}</span></span>
-                  <button className="rounded bg-rose-600 px-3 py-1 text-white" onClick={() => remove(section.resource, row.id)}>Delete</button>
+                  <span className="min-w-0 break-words"><b>{row.name}</b><span className="text-slate-500"> {row.code || row.semester_number}</span></span>
+                  <button className="shrink-0 rounded bg-rose-600 px-3 py-1 text-white" onClick={() => remove(section.resource, row.id)}>Delete</button>
                 </div>
               ))}
             </div>
@@ -156,7 +156,7 @@ export default function CatalogPage() {
         ))}
       </div>
 
-      <section className="rounded-lg border bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5">
         <h2 className="text-lg font-black">Subjects</h2>
         <form
           className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6"
@@ -182,7 +182,7 @@ export default function CatalogPage() {
           <TextInput required type="number" min="1" placeholder="Credits" value={subjectForm.credits} onChange={(event) => setSubjectForm({ ...subjectForm, credits: event.target.value })} />
           <button className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white dark:bg-brand-500 xl:col-span-6">Add Subject</button>
         </form>
-        <div className="mt-5 overflow-x-auto">
+        <div className="table-shell scrollbar-soft mt-5">
           <table className="w-full text-left text-sm">
             <thead className="text-xs uppercase text-slate-500">
               <tr><th className="py-3">Subject</th><th>Program</th><th>Department</th><th>Semester</th><th className="text-right">Action</th></tr>
@@ -202,7 +202,7 @@ export default function CatalogPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5">
         <h2 className="text-lg font-black">Units</h2>
         <form
           className="mt-4 grid gap-3 md:grid-cols-[1fr_140px_1fr_auto]"
@@ -222,8 +222,8 @@ export default function CatalogPage() {
         <div className="mt-4 grid gap-2 md:grid-cols-2">
           {units.map((unit) => (
             <div key={unit.id} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800">
-              <span><b>Unit {unit.unit_number}: {unit.title}</b><div className="text-slate-500">{unit.subject_name} ({unit.subject_code})</div></span>
-              <button className="rounded bg-rose-600 px-3 py-1 text-white" onClick={() => remove('units', unit.id)}>Delete</button>
+              <span className="min-w-0 break-words"><b>Unit {unit.unit_number}: {unit.title}</b><div className="text-slate-500">{unit.subject_name} ({unit.subject_code})</div></span>
+              <button className="shrink-0 rounded bg-rose-600 px-3 py-1 text-white" onClick={() => remove('units', unit.id)}>Delete</button>
             </div>
           ))}
         </div>

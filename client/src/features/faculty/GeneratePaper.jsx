@@ -112,9 +112,9 @@ export default function GeneratePaper() {
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[420px_1fr]">
-      <form onSubmit={generate} className="no-print rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-        <h1 className="text-2xl font-black">Generate Paper</h1>
+    <div className="grid max-w-full gap-5 xl:grid-cols-[minmax(300px,420px)_minmax(0,1fr)]">
+      <form onSubmit={generate} className="no-print min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+        <h1 className="text-2xl font-black leading-tight">Generate Paper</h1>
         <p className="mt-1 text-sm text-slate-500">Choose a subject, select its units, then enter how many questions you need for each mark type.</p>
 
         <select className="mt-5 w-full rounded-lg border border-slate-200 p-3 dark:border-slate-700 dark:bg-slate-950" value={form.subject_id} onChange={(e) => selectSubject(e.target.value)} required>
@@ -136,11 +136,11 @@ export default function GeneratePaper() {
             {!form.subject_id && <p className="text-sm text-slate-500">Select a subject to load units from the database.</p>}
             {options.units.map((unit) => (
               <label key={unit.id} className={`flex items-center justify-between gap-3 rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800 ${!unit.question_count ? 'opacity-60' : ''}`}>
-                <span>
+                <span className="min-w-0">
                   <b>Unit {unit.unit_number}: {unit.title}</b>
                   <div className="text-slate-500">{unit.question_count ? `${unit.question_count} questions available` : 'No questions available'}</div>
                 </span>
-                <input type="checkbox" disabled={!unit.question_count} checked={form.unit_ids.includes(unit.id)} onChange={(event) => toggleUnit(unit.id, event.target.checked)} />
+                <input className="shrink-0" type="checkbox" disabled={!unit.question_count} checked={form.unit_ids.includes(unit.id)} onChange={(event) => toggleUnit(unit.id, event.target.checked)} />
               </label>
             ))}
             {form.subject_id && !options.units.length && <p className="text-sm text-amber-600">No units are available for this subject.</p>}
@@ -152,8 +152,8 @@ export default function GeneratePaper() {
           <div className="mt-3 space-y-2">
             {!form.subject_id && <p className="text-sm text-slate-500">Select a subject to load mark criteria from the database.</p>}
             {options.marks.map((item) => (
-              <label key={item.marks} className="grid grid-cols-[1fr_110px] items-center gap-3 rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800">
-                <span>
+              <label key={item.marks} className="grid grid-cols-1 items-center gap-3 rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800 min-[420px]:grid-cols-[minmax(0,1fr)_110px]">
+                <span className="min-w-0">
                   <b>{item.marks} mark question type</b>
                   <div className="text-slate-500">
                     {item.question_count} available in {form.unit_ids.length ? 'selected units' : 'this subject'}
@@ -180,7 +180,7 @@ export default function GeneratePaper() {
         <button className="mt-5 w-full rounded-lg bg-brand-700 p-3 font-semibold text-white dark:bg-brand-500">Generate Question Paper</button>
       </form>
 
-      <section className="paper-print-area rounded-lg border bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+      <section className="paper-print-area min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-8">
         {!paper ? <p className="text-slate-500">Generated paper preview will appear here.</p> : (
           <>
             <div className="text-center">

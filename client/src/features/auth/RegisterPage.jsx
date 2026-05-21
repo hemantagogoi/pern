@@ -29,8 +29,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center bg-slate-100 p-6">
-      <form onSubmit={submit} className="w-full max-w-md rounded-xl bg-white p-8 shadow-soft">
+    <main className="grid min-h-dvh place-items-center bg-gradient-to-br from-brand-50 via-white to-cyan-50 px-4 py-8 sm:p-6">
+      <form onSubmit={submit} className="w-full max-w-md rounded-xl bg-white p-5 shadow-soft sm:p-8">
         <h1 className="text-2xl font-black">Faculty Registration</h1>
         <Link to="/" className="mt-4 block rounded-lg border border-slate-200 p-3 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50">
           Back to Landing Page

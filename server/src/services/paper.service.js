@@ -1,5 +1,15 @@
+import crypto from 'node:crypto';
 import { withTransaction } from '../config/db.js';
 import { AppError } from '../utils/AppError.js';
+
+function shuffleQuestions(questions) {
+  const shuffled = [...questions];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = crypto.randomInt(index + 1);
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
 
 export async function generatePaper(userId, payload) {
   return withTransaction(async (client) => {
@@ -46,16 +56,58 @@ export async function generatePaper(userId, payload) {
       throw new AppError(`Not enough ${unavailableRule.marks} mark questions are available for the selected subject and units`, 422);
     }
 
+    const pattern = { unit_ids: unitIds, mark_rules: markRules, difficulty: payload.difficulty || null };
+    const previousPaper = await client.query(
+      `SELECT gp.id
+       FROM generated_papers gp
+       WHERE gp.user_id = $1
+         AND gp.subject_id = $2
+         AND gp.pattern = $3::jsonb
+       ORDER BY gp.created_at DESC
+       LIMIT 1`,
+      [userId, payload.subject_id, JSON.stringify(pattern)]
+    );
+
+    let previousQuestionIds = [];
+    if (previousPaper.rowCount) {
+      const previousQuestions = await client.query(
+        `SELECT question_id
+         FROM paper_questions
+         WHERE paper_id = $1`,
+        [previousPaper.rows[0].id]
+      );
+      previousQuestionIds = previousQuestions.rows.map((row) => row.question_id);
+    }
+
     const selected = [];
     const used = new Set();
 
     for (const markRule of markRules) {
+      const availableWithoutPrevious = await client.query(
+        `SELECT COUNT(*)::int AS question_count
+         FROM questions
+         WHERE subject_id=$1
+           AND unit_id = ANY($2::int[])
+           AND marks=$3
+           AND ($4::difficulty_level IS NULL OR difficulty=$4)
+           AND NOT (id = ANY($5::uuid[]))`,
+        [
+          payload.subject_id,
+          unitIds,
+          markRule.marks,
+          payload.difficulty || null,
+          previousQuestionIds
+        ]
+      );
+      const canAvoidPrevious = Number(availableWithoutPrevious.rows[0].question_count) >= markRule.count;
       const params = [
         payload.subject_id,
         unitIds,
         markRule.count,
         markRule.marks,
-        payload.difficulty || null
+        payload.difficulty || null,
+        previousQuestionIds,
+        canAvoidPrevious
       ];
       const { rows } = await client.query(
         `SELECT q.*, u.unit_number, u.title AS unit_title
@@ -65,6 +117,7 @@ export async function generatePaper(userId, payload) {
            AND q.unit_id = ANY($2::int[])
            AND q.marks=$4
            AND ($5::difficulty_level IS NULL OR q.difficulty=$5)
+           AND ($7::boolean = FALSE OR NOT (q.id = ANY($6::uuid[])))
          ORDER BY random()
          LIMIT $3`,
         params
@@ -80,7 +133,9 @@ export async function generatePaper(userId, payload) {
       }
     }
 
-    const selectedMarks = selected.reduce((sum, question) => sum + Number(question.marks), 0);
+    const randomizedSelected = shuffleQuestions(selected);
+
+    const selectedMarks = randomizedSelected.reduce((sum, question) => sum + Number(question.marks), 0);
     if (selectedMarks !== Number(payload.total_marks)) {
       throw new AppError(`Selected questions total ${selectedMarks} marks, expected ${payload.total_marks}`, 422);
     }
@@ -95,11 +150,11 @@ export async function generatePaper(userId, payload) {
         payload.total_marks,
         payload.duration_minutes || 180,
         payload.instructions || null,
-        JSON.stringify({ unit_ids: unitIds, mark_rules: markRules, difficulty: payload.difficulty || null })
+        JSON.stringify(pattern)
       ]
     );
 
-    for (const [index, question] of selected.entries()) {
+    for (const [index, question] of randomizedSelected.entries()) {
       await client.query(
         `INSERT INTO paper_questions (paper_id, question_id, display_order, marks)
          VALUES ($1, $2, $3, $4)`,
@@ -107,6 +162,6 @@ export async function generatePaper(userId, payload) {
       );
     }
 
-    return { ...paper.rows[0], ...access.rows[0], questions: selected };
+    return { ...paper.rows[0], ...access.rows[0], questions: randomizedSelected };
   });
 }

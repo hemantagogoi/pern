@@ -94,7 +94,7 @@ export default function QuestionsPage() {
         <p className="mt-1 text-sm text-slate-500">Add questions to a specific subject, unit, program, department, and semester.</p>
       </div>
 
-      <section className="rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
         <h2 className="text-lg font-black">Add Question</h2>
         <form onSubmit={addQuestion} className="mt-4 grid gap-3 lg:grid-cols-3">
           <Select required value={form.program_id} onChange={(event) => setForm({ ...form, program_id: event.target.value, subject_id: '', unit_id: '' })}>
@@ -134,11 +134,11 @@ export default function QuestionsPage() {
         </form>
       </section>
 
-      <section className="rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <h2 className="text-lg font-black">Questions</h2>
           <form
-            className="flex gap-2"
+            className="grid gap-2 min-[420px]:grid-cols-[minmax(0,1fr)_auto]"
             onSubmit={(event) => {
               event.preventDefault();
               refreshQuestions();
@@ -148,7 +148,7 @@ export default function QuestionsPage() {
             <button className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold dark:border-slate-700">Search</button>
           </form>
         </div>
-        <div className="mt-4 overflow-x-auto">
+        <div className="table-shell scrollbar-soft mt-4">
           <table className="w-full text-left text-sm">
             <thead className="text-xs uppercase text-slate-500">
               <tr><th className="py-3">Question</th><th>Subject</th><th>Unit</th><th>Marks</th><th>Difficulty</th><th className="text-right">Action</th></tr>

@@ -42,18 +42,19 @@ export default function FacultySubjects() {
   }
 
   return (
-    <div className="rounded-lg border bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+    <div className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
       <h1 className="text-2xl font-black">Subject Access</h1>
       <div className="mt-4 grid gap-3">
         {loading && <p className="text-sm text-slate-500">Loading subjects...</p>}
         {subjects.map((subject) => (
           <label key={subject.id} className={`flex items-center justify-between gap-4 rounded-lg border p-4 dark:border-slate-800 ${!canApply(subject) ? 'opacity-70' : ''}`}>
-            <span>
+            <span className="min-w-0 break-words">
               <b>{subject.name}</b>
               <div className="text-sm text-slate-500">{subject.program} • {subject.department}</div>
               <div className="mt-1 text-sm font-semibold text-brand-600 dark:text-brand-400">{statusText(subject.application_status)}</div>
             </span>
             <input
+              className="shrink-0"
               type="checkbox"
               disabled={!canApply(subject)}
               checked={selected.includes(subject.id)}
@@ -62,7 +63,7 @@ export default function FacultySubjects() {
           </label>
         ))}
       </div>
-      <button disabled={!selected.length} onClick={apply} className="mt-5 rounded-lg bg-brand-700 px-5 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60">Apply selected</button>
+      <button disabled={!selected.length} onClick={apply} className="mt-5 w-full rounded-lg bg-brand-700 px-5 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60 min-[420px]:w-auto">Apply selected</button>
     </div>
   );
 }

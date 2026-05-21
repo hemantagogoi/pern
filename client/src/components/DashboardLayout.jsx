@@ -41,7 +41,7 @@ export default function DashboardLayout({ type }) {
   }
 
   return (
-    <div className="min-h-screen bg-brand-50 dark:bg-slate-950 dark:text-slate-100">
+    <div className="min-h-dvh overflow-x-hidden bg-brand-50 dark:bg-slate-950 dark:text-slate-100">
       <aside className="fixed inset-y-0 hidden w-72 border-r border-brand-100 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 lg:block">
         <div className="text-xl font-bold text-brand-700 dark:text-brand-400">NLU QPG</div>
         <p className="mt-1 text-sm text-slate-500">{user?.name}</p>
@@ -59,14 +59,32 @@ export default function DashboardLayout({ type }) {
         </nav>
       </aside>
       <main className="lg:pl-72">
-        <header className="sticky top-0 z-20 flex items-center justify-between border-b border-brand-100 bg-white/85 px-5 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
-          <span className="font-semibold">{type === 'admin' ? 'Admin Dashboard' : 'Faculty Dashboard'}</span>
-          <div className="flex items-center gap-2">
-            <button onClick={toggleTheme} className="rounded-lg border p-2 dark:border-slate-700" title="Toggle theme">{dark ? <Sun size={18} /> : <Moon size={18} />}</button>
-            <button onClick={handleLogout} className="rounded-lg border p-2 dark:border-slate-700" title="Logout"><LogOut size={18} /></button>
+        <header className="sticky top-0 z-20 border-b border-brand-100 bg-white/90 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-900/90 sm:px-5">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <span className="block truncate font-semibold">{type === 'admin' ? 'Admin Dashboard' : 'Faculty Dashboard'}</span>
+              <span className="block truncate text-xs text-slate-500 lg:hidden">{user?.name}</span>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <button onClick={toggleTheme} className="rounded-lg border p-2 dark:border-slate-700" title="Toggle theme">{dark ? <Sun size={18} /> : <Moon size={18} />}</button>
+              <button onClick={handleLogout} className="rounded-lg border p-2 dark:border-slate-700" title="Logout"><LogOut size={18} /></button>
+            </div>
           </div>
+          <nav className="scrollbar-soft -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 lg:hidden">
+            {nav.map(([to, Icon, label]) => (
+              <Link key={to} to={to} onClick={() => markUsersSeen(to)} className="flex shrink-0 items-center gap-2 rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                <Icon size={16} />
+                <span>{label}</span>
+                {to === '/admin/users' && pendingUserItems > 0 && (
+                  <span className="min-w-5 rounded-full bg-rose-600 px-1.5 py-0.5 text-center text-xs font-bold text-white">
+                    {pendingUserItems}
+                  </span>
+                )}
+              </Link>
+            ))}
+          </nav>
         </header>
-        <section className="p-5">
+        <section className="max-w-full p-4 sm:p-5">
           <Outlet />
         </section>
       </main>

@@ -78,35 +78,35 @@ textarea {
   min-width: 680px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   body {
-    font-size: 18px;
-    line-height: 1.6;
+    font-size: 19px;
+    line-height: 1.65;
   }
 
   .text-xs {
-    font-size: 0.9rem !important;
-    line-height: 1.35rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.4rem !important;
   }
 
   .text-sm {
-    font-size: 1.05rem !important;
-    line-height: 1.65rem !important;
+    font-size: 1.1rem !important;
+    line-height: 1.7rem !important;
   }
 
   .text-base {
-    font-size: 1.15rem !important;
-    line-height: 1.75rem !important;
-  }
-
-  .text-lg {
-    font-size: 1.25rem !important;
+    font-size: 1.2rem !important;
     line-height: 1.8rem !important;
   }
 
+  .text-lg {
+    font-size: 1.35rem !important;
+    line-height: 1.95rem !important;
+  }
+
   .text-2xl {
-    font-size: 1.85rem !important;
-    line-height: 2.2rem !important;
+    font-size: 2rem !important;
+    line-height: 2.4rem !important;
   }
 
   button,
@@ -115,7 +115,7 @@ textarea {
   input,
   select,
   textarea {
-    min-height: 44px;
+    min-height: 48px;
     font-size: 1rem;
   }
 

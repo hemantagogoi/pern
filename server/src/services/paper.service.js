@@ -228,7 +228,9 @@ export async function generatePaper(userId, payload) {
       ]
     );
 
-    for (const [index, question] of randomizedSelected.entries()) {
+    const orderedSelected = [...randomizedSelected].sort((left, right) => Number(left.marks) - Number(right.marks));
+
+    for (const [index, question] of orderedSelected.entries()) {
       await client.query(
         `INSERT INTO paper_questions (paper_id, question_id, display_order, marks)
          VALUES ($1, $2, $3, $4)`,
@@ -236,6 +238,6 @@ export async function generatePaper(userId, payload) {
       );
     }
 
-    return { ...paper.rows[0], ...access.rows[0], questions: randomizedSelected };
+    return { ...paper.rows[0], ...access.rows[0], questions: orderedSelected };
   });
 }

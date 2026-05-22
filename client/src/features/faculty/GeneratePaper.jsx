@@ -194,7 +194,7 @@ export default function GeneratePaper() {
               {paper.questions.map((question) => (
                 <li key={question.id} className="break-words">
                   {question.question_text}
-                  <div className="mt-0.5 text-xs text-slate-500 sm:mt-1">Unit {question.unit_number} | {question.marks} marks</div>
+                  <div className="mt-0.5 text-xs text-slate-500 sm:mt-1">{question.marks} marks</div>
                 </li>
               ))}
             </ol>

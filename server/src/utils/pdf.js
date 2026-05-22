@@ -19,7 +19,7 @@ export function streamPaperPdf(res, paper, questions) {
 
   questions.forEach((question, index) => {
     doc.fontSize(11).text(`${index + 1}. ${question.question_text}`, { continued: false });
-    doc.fontSize(10).text(`Unit ${question.unit_number || '-'} | [${question.marks} marks]`, { align: 'right' });
+    doc.fontSize(10).text(`[${question.marks} marks]`, { align: 'right' });
     doc.moveDown(0.6);
   });
 

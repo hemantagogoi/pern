@@ -57,7 +57,7 @@ export const getPaper = asyncHandler(async (req, res) => {
     `SELECT q.*, pq.display_order, u.unit_number, u.title AS unit_title FROM paper_questions pq
      JOIN questions q ON q.id = pq.question_id
      JOIN units u ON u.id = q.unit_id
-     WHERE pq.paper_id=$1 ORDER BY pq.display_order`,
+     WHERE pq.paper_id=$1 ORDER BY pq.marks, pq.display_order`,
     [req.params.id]
   );
   res.json({ ...paper.rows[0], questions: questions.rows });
@@ -76,7 +76,7 @@ export const downloadPdf = asyncHandler(async (req, res) => {
     `SELECT q.*, pq.display_order, u.unit_number, u.title AS unit_title FROM paper_questions pq
      JOIN questions q ON q.id = pq.question_id
      JOIN units u ON u.id = q.unit_id
-     WHERE pq.paper_id=$1 ORDER BY pq.display_order`,
+     WHERE pq.paper_id=$1 ORDER BY pq.marks, pq.display_order`,
     [req.params.id]
   );
   streamPaperPdf(res, paper.rows[0], questions.rows);

@@ -96,7 +96,7 @@ export default function QuestionsPage() {
 
       <section className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-6">
         <h2 className="text-base font-black sm:text-lg">Add Question</h2>
-        <form onSubmit={addQuestion} className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3\">
+        <form onSubmit={addQuestion} className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <Select required value={form.program_id} onChange={(event) => setForm({ ...form, program_id: event.target.value, subject_id: '', unit_id: '' })}>
             <option value="">Program</option>
             {programs.map((program) => <option key={program.id} value={program.id}>{program.name}</option>)}
@@ -135,38 +135,38 @@ export default function QuestionsPage() {
       </section>
 
       <section className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-6">
-        <div className="flex min-w-0 flex-col gap-3 md:gap-4 md:flex-row md:items-center md:justify-between\">
-          <h2 className=\"truncate text-base font-black sm:text-lg\">Questions</h2>
+        <div className="flex min-w-0 flex-col gap-3 md:gap-4 md:flex-row md:items-center md:justify-between">
+          <h2 className="truncate text-base font-black sm:text-lg">Questions</h2>
           <form
-            className=\"flex w-full gap-1 md:w-auto md:gap-2\"
+            className="flex w-full gap-1 md:w-auto md:gap-2"
             onSubmit={(event) => {
               event.preventDefault();
               refreshQuestions();
             }}
           >
-            <Field placeholder=\"Search...\" value={search} onChange={(event) => setSearch(event.target.value)} />
-            <button className=\"shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold dark:border-slate-700 sm:px-4 sm:text-sm\">Search</button>
+            <Field placeholder="Search..." value={search} onChange={(event) => setSearch(event.target.value)} />
+            <button className="shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold dark:border-slate-700 sm:px-4 sm:text-sm">Search</button>
           </form>
         </div>
-        <div className=\"table-shell scrollbar-soft mt-3 sm:mt-4 -mx-3 px-3 sm:-mx-4 sm:px-4 md:-mx-6 md:px-6\">
-          <table className=\"w-full text-left text-xs sm:text-sm\">
-            <thead className=\"text-xs uppercase text-slate-500\">
-              <tr><th className=\"py-2 font-semibold sm:py-3\">Question</th><th className=\"py-2 font-semibold sm:py-3\">Subject</th><th className=\"py-2 font-semibold sm:py-3\">Unit</th><th className=\"py-2 font-semibold sm:py-3\">Marks</th><th className=\"py-2 font-semibold sm:py-3\">Difficulty</th><th className=\"py-2 text-right font-semibold sm:py-3\">Action</th></tr>
+        <div className="table-shell scrollbar-soft mt-3 sm:mt-4 -mx-3 px-3 sm:-mx-4 sm:px-4 md:-mx-6 md:px-6">
+          <table className="w-full text-left text-xs sm:text-sm">
+            <thead className="text-xs uppercase text-slate-500">
+              <tr><th className="py-2 font-semibold sm:py-3">Question</th><th className="py-2 font-semibold sm:py-3">Subject</th><th className="py-2 font-semibold sm:py-3">Unit</th><th className="py-2 font-semibold sm:py-3">Marks</th><th className="py-2 font-semibold sm:py-3">Difficulty</th><th className="py-2 text-right font-semibold sm:py-3">Action</th></tr>
             </thead>
             <tbody>
               {questions.map((question) => (
-                <tr key={question.id} className=\"border-t align-top dark:border-slate-800\">
-                  <td className=\"min-w-0 py-2 sm:py-3\" data-label=\"Question\"><span className=\"line-clamp-3\">{question.question_text}</span><div className=\"mt-0.5 text-xs text-slate-500\"><span className=\"line-clamp-1\">{question.program} / {question.department} / {question.semester}</span></div></td>
-                  <td className=\"min-w-0 py-2 sm:py-3\" data-label=\"Subject\"><span className=\"line-clamp-1\">{question.subject}</span><div className=\"text-xs text-slate-500\"><span className=\"line-clamp-1\">{question.subject_code}</span></div></td>
-                  <td className=\"min-w-0 py-2 sm:py-3\" data-label=\"Unit\"><span className=\"line-clamp-1\">Unit {question.unit_number}</span><div className=\"text-xs text-slate-500\"><span className=\"line-clamp-1\">{question.unit_title}</span></div></td>
-                  <td className=\"py-2 sm:py-3\" data-label=\"Marks\">{question.marks}</td>
-                  <td className=\"py-2 capitalize sm:py-3\" data-label=\"Difficulty\"><span className=\"line-clamp-1\">{question.difficulty}</span></td>
-                  <td className=\"py-2 text-right sm:py-3\" data-label=\"Action\"><button className=\"rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1\" onClick={() => deleteQuestion(question.id)}>Delete</button></td>
+                <tr key={question.id} className="border-t align-top dark:border-slate-800">
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Question"><span className="line-clamp-3">{question.question_text}</span><div className="mt-0.5 text-xs text-slate-500"><span className="line-clamp-1">{question.program} / {question.department} / {question.semester}</span></div></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Subject"><span className="line-clamp-1">{question.subject}</span><div className="text-xs text-slate-500"><span className="line-clamp-1">{question.subject_code}</span></div></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Unit"><span className="line-clamp-1">Unit {question.unit_number}</span><div className="text-xs text-slate-500"><span className="line-clamp-1">{question.unit_title}</span></div></td>
+                  <td className="py-2 sm:py-3" data-label="Marks">{question.marks}</td>
+                  <td className="py-2 capitalize sm:py-3" data-label="Difficulty"><span className="line-clamp-1">{question.difficulty}</span></td>
+                  <td className="py-2 text-right sm:py-3" data-label="Action"><button className="rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1" onClick={() => deleteQuestion(question.id)}>Delete</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {!questions.length && <p className=\"py-4 text-center text-xs text-slate-500 sm:py-6 sm:text-sm\">No questions found.</p>}
+          {!questions.length && <p className="py-4 text-center text-xs text-slate-500 sm:py-6 sm:text-sm">No questions found.</p>}
         </div>
       </section>
     </div>

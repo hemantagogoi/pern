@@ -147,7 +147,7 @@ textarea {
 
 .table-shell tbody tr {
   border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   margin-bottom: 0.75rem;
   padding: 0.5rem;
   background: rgba(255, 255, 255, 0.92);
@@ -161,7 +161,9 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
   overflow: hidden;
+  text-align: left;
   word-break: break-word;
 }
 
@@ -176,13 +178,15 @@ textarea {
 }
 
 .table-shell td > * {
+  min-width: 0;
   width: 100%;
   overflow: hidden;
   word-break: break-word;
 }
 
 .table-shell td.text-right {
-  align-items: flex-start;
+  align-items: stretch;
+  text-align: left;
 }
 
 .table-shell button {
@@ -238,12 +242,30 @@ textarea {
   .table-shell th,
   .table-shell td,
   .table-shell tr {
-    display: table-row;
     width: auto;
   }
 
   .table-shell table {
+    display: table;
+    table-layout: fixed;
     width: 100%;
+  }
+
+  .table-shell thead {
+    display: table-header-group;
+  }
+
+  .table-shell tbody {
+    display: table-row-group;
+  }
+
+  .table-shell tr {
+    display: table-row;
+  }
+
+  .table-shell th,
+  .table-shell td {
+    display: table-cell;
   }
 
   .table-shell thead tr {
@@ -269,7 +291,6 @@ textarea {
 
   .table-shell td {
     padding: 0.75rem;
-    display: table-cell;
     flex-direction: row;
     gap: 0;
     overflow: visible;
@@ -289,14 +310,15 @@ textarea {
   }
 
   .table-shell td > * {
+    max-width: 100%;
     width: auto;
     overflow: visible;
-    word-break: normal;
+    word-break: break-word;
   }
 
   .table-shell td.text-right {
     text-align: right;
-    align-items: auto;
+    align-items: initial;
   }
 
   .table-shell button {

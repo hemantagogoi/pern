@@ -157,19 +157,18 @@ export default function FacultyQuestionBank() {
               {questions.map((question) => (
                 <tr key={question.id} className="border-t align-top dark:border-slate-800">
                   <td className="min-w-0 py-2 sm:py-3" data-label="Question"><span className="line-clamp-3">{question.question_text}</span></td>
-                  <td className="min-w-0 py-2 sm:py-3" data-label="Subject\"><span className="line-clamp-1\">{question.subject}</span><div className="text-xs text-slate-500\"><span className="line-clamp-1\">{question.subject_code}</span></div></td>
-                  <td className="min-w-0 py-2 sm:py-3" data-label="Unit\"><span className="line-clamp-1\">Unit {question.unit_number}</span><div className="text-xs text-slate-500\"><span className="line-clamp-1\">{question.unit_title}</span></div></td>
-                  <td className="py-2 sm:py-3\" data-label="Marks\">{question.marks}</td>
-                  <td className="py-2 capitalize sm:py-3\" data-label="Difficulty\"><span className="line-clamp-1\">{question.difficulty}</span></td>
-                  <td className="py-2 text-right sm:py-3\" data-label="Action\"><button className="rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1\" onClick={() => deleteQuestion(question.id)}>Delete</button></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Subject"><span className="line-clamp-1">{question.subject}</span><div className="text-xs text-slate-500"><span className="line-clamp-1">{question.subject_code}</span></div></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Unit"><span className="line-clamp-1">Unit {question.unit_number}</span><div className="text-xs text-slate-500"><span className="line-clamp-1">{question.unit_title}</span></div></td>
+                  <td className="py-2 sm:py-3" data-label="Marks">{question.marks}</td>
+                  <td className="py-2 capitalize sm:py-3" data-label="Difficulty"><span className="line-clamp-1">{question.difficulty}</span></td>
+                  <td className="py-2 text-right sm:py-3" data-label="Action"><button className="rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1" onClick={() => deleteQuestion(question.id)}>Delete</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {!questions.length && <p className="py-4 text-center text-xs text-slate-500 sm:py-6 sm:text-sm\">No questions found for approved subjects.</p>}
+          {!questions.length && <p className="py-4 text-center text-xs text-slate-500 sm:py-6 sm:text-sm">No questions found for approved subjects.</p>}
         </div>
       </section>
     </div>
   );
-}
 }

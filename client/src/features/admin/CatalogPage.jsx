@@ -206,24 +206,24 @@ export default function CatalogPage() {
       <section className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-5">
         <h2 className="text-base font-black sm:text-lg">Units</h2>
         <form
-          className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_120px_1fr] xl:grid-cols-[1fr_140px_1fr_auto]"
+          className="mt-3 grid min-w-0 grid-cols-1 gap-2 sm:mt-4 sm:grid-cols-2 sm:gap-3 lg:grid-cols-[minmax(0,1fr)_120px_minmax(0,1fr)] xl:grid-cols-[minmax(0,1.4fr)_120px_minmax(0,1fr)_auto]"
           onSubmit={(event) => {
             event.preventDefault();
             addUnit();
           }}
         >
-          <select className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required value={unitForm.subject_id} onChange={(event) => setUnitForm({ ...unitForm, subject_id: event.target.value })}>
+          <select className="min-w-0 rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required value={unitForm.subject_id} onChange={(event) => setUnitForm({ ...unitForm, subject_id: event.target.value })}>
             <option value="">Select subject</option>
             {subjectOptions.map((subject) => <option key={subject.id} value={subject.id}>{subject.label}</option>)}
           </select>
-          <input className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required type="number" min="1" placeholder="Unit no." value={unitForm.unit_number} onChange={(event) => setUnitForm({ ...unitForm, unit_number: event.target.value })} />
-          <input className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required placeholder="Unit title" value={unitForm.title} onChange={(event) => setUnitForm({ ...unitForm, title: event.target.value })} />
-          <button className="rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white dark:bg-brand-500 sm:col-span-2 lg:col-span-1 xl:col-span-1\">Add Unit</button>
+          <input className="min-w-0 rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required type="number" min="1" placeholder="Unit no." value={unitForm.unit_number} onChange={(event) => setUnitForm({ ...unitForm, unit_number: event.target.value })} />
+          <input className="min-w-0 rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required placeholder="Unit title" value={unitForm.title} onChange={(event) => setUnitForm({ ...unitForm, title: event.target.value })} />
+          <button className="w-full shrink-0 whitespace-nowrap rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white dark:bg-brand-500 sm:col-span-2 lg:col-span-3 xl:col-span-1 xl:w-auto">Add Unit</button>
         </form>
         <div className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {units.map((unit) => (
             <div key={unit.id} className="flex min-w-0 items-center justify-between gap-2 rounded-lg border border-slate-200 p-2 text-xs dark:border-slate-800 sm:gap-3 sm:p-3 sm:text-sm">
-              <span className="min-w-0 break-words"><b className="line-clamp-1\">Unit {unit.unit_number}: {unit.title}</b><div className="text-slate-500 line-clamp-1\"><span className=\"line-clamp-1\">{unit.subject_name} ({unit.subject_code})</span></div></span>
+              <span className="min-w-0 break-words"><b className="line-clamp-1">Unit {unit.unit_number}: {unit.title}</b><div className="text-slate-500 line-clamp-1"><span className="line-clamp-1">{unit.subject_name} ({unit.subject_code})</span></div></span>
               <button className="shrink-0 rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1" onClick={() => remove('units', unit.id)}>Delete</button>
             </div>
           ))}

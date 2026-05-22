@@ -111,26 +111,27 @@ export default function CatalogPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-black">Academic Catalog</h1>
-        <p className="mt-1 text-sm text-slate-500">Add and delete programs, departments, semesters, subjects, and units.</p>
+        <h1 className="text-lg font-black sm:text-2xl">Academic Catalog</h1>
+        <p className="mt-1 text-xs text-slate-500 sm:text-sm">Add and delete programs, departments, semesters, subjects, and units.</p>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 md:gap-5 md:grid-cols-2 xl:grid-cols-3">
         {simpleSections.map((section) => (
-          <section key={section.resource} className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5">
-            <h2 className="text-lg font-black">{section.title}</h2>
+          <section key={section.resource} className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-5">
+            <h2 className="text-base font-black sm:text-lg">{section.title}</h2>
             <form
-              className="mt-4 grid gap-3"
+              className="mt-3 grid gap-2 sm:mt-4 sm:gap-3"
               onSubmit={(event) => {
                 event.preventDefault();
                 addSimple(section.resource);
               }}
             >
               {section.fields.map((field, index) => (
-                <TextInput
+                <input
                   key={field}
+                  className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950"
                   required
                   type={field === 'semester_number' ? 'number' : 'text'}
                   min={field === 'semester_number' ? 1 : undefined}
@@ -142,13 +143,13 @@ export default function CatalogPage() {
                   })}
                 />
               ))}
-              <button className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white dark:bg-brand-500">Add {section.title.slice(0, -1)}</button>
+              <button className="rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white dark:bg-brand-500">Add {section.title.slice(0, -1)}</button>
             </form>
-            <div className="mt-4 space-y-2">
+            <div className="mt-3 space-y-1.5 sm:mt-4 sm:space-y-2">
               {section.rows.map((row) => (
-                <div key={row.id} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800">
-                  <span className="min-w-0 break-words"><b>{row.name}</b><span className="text-slate-500"> {row.code || row.semester_number}</span></span>
-                  <button className="shrink-0 rounded bg-rose-600 px-3 py-1 text-white" onClick={() => remove(section.resource, row.id)}>Delete</button>
+                <div key={row.id} className="flex min-w-0 items-center justify-between gap-2 rounded-lg border border-slate-200 p-2 text-xs dark:border-slate-800 sm:gap-3 sm:p-3 sm:text-sm">
+                  <span className="min-w-0 break-words"><b className="line-clamp-1">{row.name}</b><span className="line-clamp-1 text-slate-500"> {row.code || row.semester_number}</span></span>
+                  <button className="shrink-0 rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1" onClick={() => remove(section.resource, row.id)}>Delete</button>
                 </div>
               ))}
             </div>
@@ -156,45 +157,45 @@ export default function CatalogPage() {
         ))}
       </div>
 
-      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5">
-        <h2 className="text-lg font-black">Subjects</h2>
+      <section className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-5">
+        <h2 className="text-base font-black sm:text-lg">Subjects</h2>
         <form
-          className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-6"
+          className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"
           onSubmit={(event) => {
             event.preventDefault();
             addSubject();
           }}
         >
-          <SelectInput required value={subjectForm.program_id} onChange={(event) => setSubjectForm({ ...subjectForm, program_id: event.target.value })}>
+          <select className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required value={subjectForm.program_id} onChange={(event) => setSubjectForm({ ...subjectForm, program_id: event.target.value })}>
             <option value="">Program</option>
             {programs.map((program) => <option key={program.id} value={program.id}>{program.name}</option>)}
-          </SelectInput>
-          <SelectInput required value={subjectForm.department_id} onChange={(event) => setSubjectForm({ ...subjectForm, department_id: event.target.value })}>
+          </select>
+          <select className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required value={subjectForm.department_id} onChange={(event) => setSubjectForm({ ...subjectForm, department_id: event.target.value })}>
             <option value="">Department</option>
             {departments.map((department) => <option key={department.id} value={department.id}>{department.name}</option>)}
-          </SelectInput>
-          <SelectInput required value={subjectForm.semester_id} onChange={(event) => setSubjectForm({ ...subjectForm, semester_id: event.target.value })}>
+          </select>
+          <select className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required value={subjectForm.semester_id} onChange={(event) => setSubjectForm({ ...subjectForm, semester_id: event.target.value })}>
             <option value="">Semester</option>
             {semesters.map((semester) => <option key={semester.id} value={semester.id}>{semester.name}</option>)}
-          </SelectInput>
-          <TextInput required placeholder="Subject name" value={subjectForm.name} onChange={(event) => setSubjectForm({ ...subjectForm, name: event.target.value })} />
-          <TextInput required placeholder="Subject code" value={subjectForm.code} onChange={(event) => setSubjectForm({ ...subjectForm, code: event.target.value })} />
-          <TextInput required type="number" min="1" placeholder="Credits" value={subjectForm.credits} onChange={(event) => setSubjectForm({ ...subjectForm, credits: event.target.value })} />
-          <button className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white dark:bg-brand-500 xl:col-span-6">Add Subject</button>
+          </select>
+          <input className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required placeholder="Subject name" value={subjectForm.name} onChange={(event) => setSubjectForm({ ...subjectForm, name: event.target.value })} />
+          <input className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required placeholder="Subject code" value={subjectForm.code} onChange={(event) => setSubjectForm({ ...subjectForm, code: event.target.value })} />
+          <input className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required type="number" min="1" placeholder="Credits" value={subjectForm.credits} onChange={(event) => setSubjectForm({ ...subjectForm, credits: event.target.value })} />
+          <button className="rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white dark:bg-brand-500 sm:col-span-2 lg:col-span-3 xl:col-span-6">Add Subject</button>
         </form>
-        <div className="table-shell scrollbar-soft mt-5">
-          <table className="w-full text-left text-sm">
+        <div className="table-shell scrollbar-soft mt-3 sm:mt-4 -mx-3 px-3 sm:-mx-4 sm:px-4 md:-mx-5 md:px-5">
+          <table className="w-full text-left text-xs sm:text-sm">
             <thead className="text-xs uppercase text-slate-500">
-              <tr><th className="py-3">Subject</th><th>Program</th><th>Department</th><th>Semester</th><th className="text-right">Action</th></tr>
+              <tr><th className="py-2 font-semibold sm:py-3">Subject</th><th className="py-2 font-semibold sm:py-3">Program</th><th className="py-2 font-semibold sm:py-3">Department</th><th className="py-2 font-semibold sm:py-3">Semester</th><th className="py-2 text-right font-semibold sm:py-3">Action</th></tr>
             </thead>
             <tbody>
               {subjects.map((subject) => (
                 <tr key={subject.id} className="border-t dark:border-slate-800">
-                  <td className="py-3"><b>{subject.name}</b><div className="text-slate-500">{subject.code}</div></td>
-                  <td>{subject.program}</td>
-                  <td>{subject.department}</td>
-                  <td>{subject.semester}</td>
-                  <td className="text-right"><button className="rounded bg-rose-600 px-3 py-1 text-white" onClick={() => remove('subjects', subject.id)}>Delete</button></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Subject"><b className="line-clamp-1">{subject.name}</b><div className="text-slate-500 line-clamp-1 text-xs">{subject.code}</div></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Program"><span className="line-clamp-1 text-xs sm:text-sm">{subject.program}</span></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Department"><span className="line-clamp-1 text-xs sm:text-sm">{subject.department}</span></td>
+                  <td className="min-w-0 py-2 sm:py-3" data-label="Semester"><span className="line-clamp-1 text-xs sm:text-sm">{subject.semester}</span></td>
+                  <td className="py-2 text-right sm:py-3" data-label="Action"><button className="rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1" onClick={() => remove('subjects', subject.id)}>Delete</button></td>
                 </tr>
               ))}
             </tbody>
@@ -202,28 +203,28 @@ export default function CatalogPage() {
         </div>
       </section>
 
-      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-5">
-        <h2 className="text-lg font-black">Units</h2>
+      <section className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-5">
+        <h2 className="text-base font-black sm:text-lg">Units</h2>
         <form
-          className="mt-4 grid gap-3 md:grid-cols-[1fr_140px_1fr_auto]"
+          className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_120px_1fr] xl:grid-cols-[1fr_140px_1fr_auto]"
           onSubmit={(event) => {
             event.preventDefault();
             addUnit();
           }}
         >
-          <SelectInput required value={unitForm.subject_id} onChange={(event) => setUnitForm({ ...unitForm, subject_id: event.target.value })}>
+          <select className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required value={unitForm.subject_id} onChange={(event) => setUnitForm({ ...unitForm, subject_id: event.target.value })}>
             <option value="">Select subject</option>
             {subjectOptions.map((subject) => <option key={subject.id} value={subject.id}>{subject.label}</option>)}
-          </SelectInput>
-          <TextInput required type="number" min="1" placeholder="Unit no." value={unitForm.unit_number} onChange={(event) => setUnitForm({ ...unitForm, unit_number: event.target.value })} />
-          <TextInput required placeholder="Unit title" value={unitForm.title} onChange={(event) => setUnitForm({ ...unitForm, title: event.target.value })} />
-          <button className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white dark:bg-brand-500">Add Unit</button>
+          </select>
+          <input className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required type="number" min="1" placeholder="Unit no." value={unitForm.unit_number} onChange={(event) => setUnitForm({ ...unitForm, unit_number: event.target.value })} />
+          <input className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950" required placeholder="Unit title" value={unitForm.title} onChange={(event) => setUnitForm({ ...unitForm, title: event.target.value })} />
+          <button className="rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white dark:bg-brand-500 sm:col-span-2 lg:col-span-1 xl:col-span-1\">Add Unit</button>
         </form>
-        <div className="mt-4 grid gap-2 md:grid-cols-2">
+        <div className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {units.map((unit) => (
-            <div key={unit.id} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800">
-              <span className="min-w-0 break-words"><b>Unit {unit.unit_number}: {unit.title}</b><div className="text-slate-500">{unit.subject_name} ({unit.subject_code})</div></span>
-              <button className="shrink-0 rounded bg-rose-600 px-3 py-1 text-white" onClick={() => remove('units', unit.id)}>Delete</button>
+            <div key={unit.id} className="flex min-w-0 items-center justify-between gap-2 rounded-lg border border-slate-200 p-2 text-xs dark:border-slate-800 sm:gap-3 sm:p-3 sm:text-sm">
+              <span className="min-w-0 break-words"><b className="line-clamp-1\">Unit {unit.unit_number}: {unit.title}</b><div className="text-slate-500 line-clamp-1\"><span className=\"line-clamp-1\">{unit.subject_name} ({unit.subject_code})</span></div></span>
+              <button className="shrink-0 rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1" onClick={() => remove('units', unit.id)}>Delete</button>
             </div>
           ))}
         </div>

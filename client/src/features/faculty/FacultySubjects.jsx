@@ -42,16 +42,16 @@ export default function FacultySubjects() {
   }
 
   return (
-    <div className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-      <h1 className="text-2xl font-black">Subject Access</h1>
-      <div className="mt-4 grid gap-3">
-        {loading && <p className="text-sm text-slate-500">Loading subjects...</p>}
+    <div className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-6">
+      <h1 className="truncate text-lg font-black sm:text-2xl">Subject Access</h1>
+      <div className="mt-3 grid gap-2 sm:mt-4 sm:gap-3">
+        {loading && <p className="text-xs text-slate-500 sm:text-sm">Loading subjects...</p>}
         {subjects.map((subject) => (
-          <label key={subject.id} className={`flex items-center justify-between gap-4 rounded-lg border p-4 dark:border-slate-800 ${!canApply(subject) ? 'opacity-70' : ''}`}>
+          <label key={subject.id} className={`flex min-w-0 flex-col gap-2 rounded-lg border p-2 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:p-3 ${!canApply(subject) ? 'opacity-70' : ''}`}>
             <span className="min-w-0 break-words">
-              <b>{subject.name}</b>
-              <div className="text-sm text-slate-500">{subject.program} • {subject.department}</div>
-              <div className="mt-1 text-sm font-semibold text-brand-600 dark:text-brand-400">{statusText(subject.application_status)}</div>
+              <b className="line-clamp-1 text-sm sm:text-base">{subject.name}</b>
+              <div className="text-xs text-slate-500 sm:text-sm">{subject.program} • {subject.department}</div>
+              <div className="mt-1 text-xs font-semibold text-brand-600 dark:text-brand-400 sm:text-sm">{statusText(subject.application_status)}</div>
             </span>
             <input
               className="shrink-0"
@@ -63,7 +63,7 @@ export default function FacultySubjects() {
           </label>
         ))}
       </div>
-      <button disabled={!selected.length} onClick={apply} className="mt-5 w-full rounded-lg bg-brand-700 px-5 py-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60 min-[420px]:w-auto">Apply selected</button>
+      <button disabled={!selected.length} onClick={apply} className="mt-3 w-full rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60 sm:mt-4 sm:px-4 sm:py-3 md:w-auto">Apply selected</button>
     </div>
   );
 }

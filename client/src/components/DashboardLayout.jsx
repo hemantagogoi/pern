@@ -63,7 +63,7 @@ export default function DashboardLayout({ type }) {
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
               <span className="block truncate font-semibold">{type === 'admin' ? 'Admin Dashboard' : 'Faculty Dashboard'}</span>
-              <span className="block truncate text-xs text-slate-500 lg:hidden">{user?.name}</span>
+              <span className="block truncate text-sm text-slate-500 lg:hidden">{user?.name}</span>
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <button onClick={toggleTheme} className="rounded-lg border p-2 dark:border-slate-700" title="Toggle theme">{dark ? <Sun size={18} /> : <Moon size={18} />}</button>
@@ -72,7 +72,7 @@ export default function DashboardLayout({ type }) {
           </div>
           <nav className="scrollbar-soft -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 lg:hidden">
             {nav.map(([to, Icon, label]) => (
-              <Link key={to} to={to} onClick={() => markUsersSeen(to)} className="flex shrink-0 items-center gap-2 rounded-lg border border-brand-100 bg-white px-3 py-2 text-sm font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-950">
+              <Link key={to} to={to} onClick={() => markUsersSeen(to)} className="flex shrink-0 items-center gap-2 rounded-lg border border-brand-100 bg-white px-3.5 py-2.5 text-base font-semibold shadow-sm dark:border-slate-800 dark:bg-slate-950">
                 <Icon size={16} />
                 <span>{label}</span>
                 {to === '/admin/users' && pendingUserItems > 0 && (

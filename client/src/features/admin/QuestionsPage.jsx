@@ -88,15 +88,15 @@ export default function QuestionsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <h1 className="text-2xl font-black">Question Bank</h1>
-        <p className="mt-1 text-sm text-slate-500">Add questions to a specific subject, unit, program, department, and semester.</p>
+        <h1 className="text-lg font-black sm:text-2xl">Question Bank</h1>
+        <p className="mt-1 text-xs text-slate-500 sm:text-sm">Add questions to a specific subject, unit, program, department, and semester.</p>
       </div>
 
-      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-        <h2 className="text-lg font-black">Add Question</h2>
-        <form onSubmit={addQuestion} className="mt-4 grid gap-3 lg:grid-cols-3">
+      <section className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-6">
+        <h2 className="text-base font-black sm:text-lg">Add Question</h2>
+        <form onSubmit={addQuestion} className="mt-3 grid gap-2 sm:mt-4 sm:gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3\">
           <Select required value={form.program_id} onChange={(event) => setForm({ ...form, program_id: event.target.value, subject_id: '', unit_id: '' })}>
             <option value="">Program</option>
             {programs.map((program) => <option key={program.id} value={program.id}>{program.name}</option>)}
@@ -124,49 +124,49 @@ export default function QuestionsPage() {
           </Select>
           <Field required type="number" min="1" placeholder="Marks" value={form.marks} onChange={(event) => setForm({ ...form, marks: event.target.value })} />
           <textarea
-            className="min-h-28 rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950 lg:col-span-2"
+            className="min-h-20 rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand-500 dark:border-slate-700 dark:bg-slate-950 sm:col-span-2 lg:col-span-2 lg:min-h-28"
             required
             placeholder="Question text"
             value={form.question_text}
             onChange={(event) => setForm({ ...form, question_text: event.target.value })}
           />
-          <button className="rounded-lg bg-brand-700 px-4 py-2 text-sm font-semibold text-white dark:bg-brand-500 lg:col-span-3">Add Question</button>
+          <button className="rounded-lg bg-brand-700 px-3 py-2 text-sm font-semibold text-white dark:bg-brand-500 sm:col-span-2 lg:col-span-3">Add Question</button>
         </form>
       </section>
 
-      <section className="min-w-0 rounded-lg border bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <h2 className="text-lg font-black">Questions</h2>
+      <section className="min-w-0 overflow-hidden rounded-lg border bg-white p-3 dark:border-slate-800 dark:bg-slate-900 sm:p-4 md:p-6">
+        <div className="flex min-w-0 flex-col gap-3 md:gap-4 md:flex-row md:items-center md:justify-between\">
+          <h2 className=\"truncate text-base font-black sm:text-lg\">Questions</h2>
           <form
-            className="grid gap-2 min-[420px]:grid-cols-[minmax(0,1fr)_auto]"
+            className=\"flex w-full gap-1 md:w-auto md:gap-2\"
             onSubmit={(event) => {
               event.preventDefault();
               refreshQuestions();
             }}
           >
-            <Field placeholder="Search question text" value={search} onChange={(event) => setSearch(event.target.value)} />
-            <button className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold dark:border-slate-700">Search</button>
+            <Field placeholder=\"Search...\" value={search} onChange={(event) => setSearch(event.target.value)} />
+            <button className=\"shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold dark:border-slate-700 sm:px-4 sm:text-sm\">Search</button>
           </form>
         </div>
-        <div className="table-shell scrollbar-soft mt-4">
-          <table className="w-full text-left text-sm">
-            <thead className="text-xs uppercase text-slate-500">
-              <tr><th className="py-3">Question</th><th>Subject</th><th>Unit</th><th>Marks</th><th>Difficulty</th><th className="text-right">Action</th></tr>
+        <div className=\"table-shell scrollbar-soft mt-3 sm:mt-4 -mx-3 px-3 sm:-mx-4 sm:px-4 md:-mx-6 md:px-6\">
+          <table className=\"w-full text-left text-xs sm:text-sm\">
+            <thead className=\"text-xs uppercase text-slate-500\">
+              <tr><th className=\"py-2 font-semibold sm:py-3\">Question</th><th className=\"py-2 font-semibold sm:py-3\">Subject</th><th className=\"py-2 font-semibold sm:py-3\">Unit</th><th className=\"py-2 font-semibold sm:py-3\">Marks</th><th className=\"py-2 font-semibold sm:py-3\">Difficulty</th><th className=\"py-2 text-right font-semibold sm:py-3\">Action</th></tr>
             </thead>
             <tbody>
               {questions.map((question) => (
-                <tr key={question.id} className="border-t align-top dark:border-slate-800">
-                  <td className="max-w-xl py-3">{question.question_text}<div className="mt-1 text-xs text-slate-500">{question.program} / {question.department} / {question.semester}</div></td>
-                  <td>{question.subject}<div className="text-xs text-slate-500">{question.subject_code}</div></td>
-                  <td>Unit {question.unit_number}<div className="text-xs text-slate-500">{question.unit_title}</div></td>
-                  <td>{question.marks}</td>
-                  <td className="capitalize">{question.difficulty}</td>
-                  <td className="text-right"><button className="rounded bg-rose-600 px-3 py-1 text-white" onClick={() => deleteQuestion(question.id)}>Delete</button></td>
+                <tr key={question.id} className=\"border-t align-top dark:border-slate-800\">
+                  <td className=\"min-w-0 py-2 sm:py-3\" data-label=\"Question\"><span className=\"line-clamp-3\">{question.question_text}</span><div className=\"mt-0.5 text-xs text-slate-500\"><span className=\"line-clamp-1\">{question.program} / {question.department} / {question.semester}</span></div></td>
+                  <td className=\"min-w-0 py-2 sm:py-3\" data-label=\"Subject\"><span className=\"line-clamp-1\">{question.subject}</span><div className=\"text-xs text-slate-500\"><span className=\"line-clamp-1\">{question.subject_code}</span></div></td>
+                  <td className=\"min-w-0 py-2 sm:py-3\" data-label=\"Unit\"><span className=\"line-clamp-1\">Unit {question.unit_number}</span><div className=\"text-xs text-slate-500\"><span className=\"line-clamp-1\">{question.unit_title}</span></div></td>
+                  <td className=\"py-2 sm:py-3\" data-label=\"Marks\">{question.marks}</td>
+                  <td className=\"py-2 capitalize sm:py-3\" data-label=\"Difficulty\"><span className=\"line-clamp-1\">{question.difficulty}</span></td>
+                  <td className=\"py-2 text-right sm:py-3\" data-label=\"Action\"><button className=\"rounded bg-rose-600 px-2 py-0.5 text-xs text-white sm:px-3 sm:py-1\" onClick={() => deleteQuestion(question.id)}>Delete</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {!questions.length && <p className="py-6 text-center text-sm text-slate-500">No questions found.</p>}
+          {!questions.length && <p className=\"py-4 text-center text-xs text-slate-500 sm:py-6 sm:text-sm\">No questions found.</p>}
         </div>
       </section>
     </div>

@@ -12,15 +12,15 @@ export default function LandingPage() {
   return (
     <div className="min-h-dvh bg-slate-950 text-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-2 overflow-hidden px-4 py-4 sm:px-6">
-        <Link to="/" className="min-w-0 shrink truncate text-base font-black text-brand-100 sm:text-xl">NLU QPG</Link>
+        <Link to="/" className="min-w-0 shrink truncate text-lg font-black text-brand-100 sm:text-xl">NLU QPG</Link>
         <div className="flex shrink-0 gap-1.5 sm:gap-3">
-          <Link className="rounded-lg px-2.5 py-2 text-xs font-semibold hover:bg-white/10 min-[420px]:px-3 min-[420px]:text-sm sm:px-4" to="/login">Login</Link>
-          <Link className="rounded-lg bg-white px-2.5 py-2 text-xs font-semibold text-teal-950 shadow-soft hover:bg-brand-50 min-[420px]:px-3 min-[420px]:text-sm sm:px-4" to="/register">Register</Link>
+          <Link className="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-white/10 sm:px-4" to="/login">Login</Link>
+          <Link className="rounded-lg bg-white px-3 py-2 text-sm font-semibold text-teal-950 shadow-soft hover:bg-brand-50 sm:px-4" to="/register">Register</Link>
         </div>
       </nav>
       <section className="mx-auto grid max-w-7xl gap-8 px-4 pb-12 pt-7 sm:px-6 sm:pb-16 sm:pt-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(320px,0.98fr)] lg:items-center">
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-400/10 px-3 py-1 text-xs font-bold uppercase text-brand-100">
+          <p className="inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-400/10 px-3 py-1.5 text-sm font-bold uppercase text-brand-100">
             <ShieldCheck size={14} /> North Lakhimpur University
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">Automated Question Paper Generator</h1>

@@ -78,6 +78,7 @@ textarea {
 .table-shell table {
   min-width: 100%;
   border-collapse: collapse;
+  width: 100%;
 }
 
 button,
@@ -130,6 +131,7 @@ textarea {
 .table-shell td,
 .table-shell tr {
   display: block;
+  width: 100%;
 }
 
 .table-shell thead tr {
@@ -143,35 +145,51 @@ textarea {
   border: 0;
 }
 
-.table-shell tr {
+.table-shell tbody tr {
   border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: 1rem;
-  margin-bottom: 1rem;
-  padding: 0.85rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
   background: rgba(255, 255, 255, 0.92);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
 }
 
 .table-shell td {
-  padding: 0.55rem 0;
+  padding: 0.25rem 0;
   display: flex;
-  justify-content: space-between;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+  word-break: break-word;
 }
 
 .table-shell td::before {
   content: attr(data-label);
   color: #64748b;
-  flex: 1 1 100%;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
 }
 
 .table-shell td > * {
-  flex: 1 1 100%;
+  width: 100%;
+  overflow: hidden;
+  word-break: break-word;
 }
 
 .table-shell td.text-right {
-  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.table-shell button {
+  min-height: auto;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  width: 100%;
 }
 
 @media (min-width: 901px) {
@@ -221,48 +239,79 @@ textarea {
   .table-shell td,
   .table-shell tr {
     display: table-row;
+    width: auto;
+  }
+
+  .table-shell table {
+    width: 100%;
   }
 
   .table-shell thead tr {
     position: relative;
     width: auto;
     height: auto;
-    padding: auto;
-    margin: auto;
+    padding: 0;
+    margin: 0;
     overflow: visible;
     clip: auto;
-    border: auto;
+    border: 0;
   }
 
-  .table-shell tr {
-    border: none;
+  .table-shell tbody tr {
+    border: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: 0;
     margin-bottom: 0;
     padding: 0;
     background: transparent;
+    display: table-row;
+    gap: 0;
   }
 
   .table-shell td {
-    padding: auto;
+    padding: 0.75rem;
     display: table-cell;
-    justify-content: auto;
-    gap: auto;
+    flex-direction: row;
+    gap: 0;
+    overflow: visible;
+    word-break: normal;
+    text-align: left;
+    vertical-align: middle;
   }
 
   .table-shell td::before {
     content: none;
     color: auto;
-    flex: none;
     font-size: auto;
     font-weight: auto;
+    text-transform: none;
+    letter-spacing: 0;
+    display: none;
   }
 
   .table-shell td > * {
-    flex: none;
+    width: auto;
+    overflow: visible;
+    word-break: normal;
   }
 
   .table-shell td.text-right {
-    justify-content: auto;
+    text-align: right;
+    align-items: auto;
+  }
+
+  .table-shell button {
+    min-height: auto;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    width: auto;
+  }
+
+  .table-shell th {
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 600;
+    background: transparent;
   }
 }
 
